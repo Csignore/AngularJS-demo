@@ -230,9 +230,6 @@ angular.module('myApp', ['ngRoute'])
 	$scope.runReset = function(){
 		$scope.renderLoginItem(function(){
 		var link = JSON.stringify($scope.LoginObject.util.parseQueryString(window.location.href));
-		console.log(link.length);
-		console.log(link);
-		console.log(link.includes("reset"));
 		if (link.includes("reset")){
 			$scope.handleEventResetPassword();
 			$scope.resetflag = true;
