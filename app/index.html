@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <base href="/">
+  <title>My AngularJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src = "https://auth.lrcontent.com/v2/LoginRadiusV2.js"></script>
+  <script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.js"></script>
+  <script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.Integrations.js"></script>
+
+    <script type="text/html" id="loginradiuscustom_tmpl">
+    <a class="lr-provider-label" href="javascript:void(0)" onclick="return <#=ObjectName#>.util.openWindow('<#= Endpoint #>');" title="<#= Name #>" alt="Sign in with <#=Name#>"><#=Name#></a>
+  </script>
+</head>
+<body  ng-controller="IndexCtrl">
+
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+<br/>
+    <img src="https://files.startupranking.com/startup/thumb/9775_5b4eb5782a00487d66027eae19bfd950cac7bd8a_loginradius_l.png" alt="">
+
+    <div id = "roots" ng-show = "loginflag2">
+
+    <div id="verifyemail" ng-if = "myVar">
+      <h2  align="center">
+        <a href="../index.html">Congrat! You can login now with your email</a>
+      </h2>
+    </div>
+
+      <ul>
+        <li>
+          <button  ng-click="load(1)">Sign up</button>
+          <div id="registration-container"  ng-show="showRegistration"></div>
+        </li>
+        <br>
+        <li>
+           <button ng-click="load(2)">Resend Email to Verify</button>
+          <div id="resendemailverification-container" ng-show="showResendEmail"></div>
+        </li>
+        <br>
+        <li>
+          <button ng-click="load(3)">Email Login</button>
+          <div id="login-container" ng-show="showEmailLogin"></div>
+        </li>
+        <br>
+        <li>        
+          <button ng-click="load(5)">Social Login</button>
+          <div id = "sociallogin-container" ng-show="showSocialLogin">
+          <div id="interfacecontainerdiv" className="interfacecontainerdiv"></div>
+             
+          </div>
+        </li>
+        <br>
+        <li>
+          <button ng-click="load(4)">forgot password</button>
+          <div id = "forgotpassword-container" ng-show="showForgotPW"></div>
+        </li>
+        <br>
+      </ul>
+
+
+    </div>
+    <div id = "resetPassword" ng-if = "resetflag">
+
+        <div id="all-login" style= "background-color: white;">
+          <div id="resetpassword-container" ></div>
+        </div>
+    </div>
+
+
+
+    <div id="loginProfile" ng-show = "loginflag1">
+
+
+          <div id="ur_profile" >
+            
+
+
+
+            <button ng-init="showChangePW = false" ng-click="showChangePW = !showChangePW">Change your password</button>
+            <div id="changepassword-container" ng-show="showChangePW"></div>
+            <br>
+          <br>
+          <button ng-click = "logout()">Logout</button>
+          <br>
+          <h3>Your Profile</h3></div>
+          <p>
+            {{ProfileObject}}
+          </p>
+    </div>
+
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="view1/view1.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+
+</body>
+</html>
