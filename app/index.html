@@ -14,9 +14,9 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+
   <script src = "https://auth.lrcontent.com/v2/LoginRadiusV2.js"></script>
-  <script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.js"></script>
-  <script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.Integrations.js"></script>
+
 
     <script type="text/html" id="loginradiuscustom_tmpl">
     <a class="lr-provider-label" href="javascript:void(0)" onclick="return <#=ObjectName#>.util.openWindow('<#= Endpoint #>');" title="<#= Name #>" alt="Sign in with <#=Name#>"><#=Name#></a>
@@ -43,11 +43,6 @@
         <li>
           <button  ng-click="load(1)">Sign up</button>
           <div id="registration-container"  ng-show="showRegistration"></div>
-        </li>
-        <br>
-        <li>
-           <button ng-click="load(2)">Resend Email to Verify</button>
-          <div id="resendemailverification-container" ng-show="showResendEmail"></div>
         </li>
         <br>
         <li>
@@ -98,7 +93,7 @@
           <h3>Your Profile</h3></div>
           <p>
             {{ProfileObject}}
-          </p>
+          </p> 
     </div>
 
 

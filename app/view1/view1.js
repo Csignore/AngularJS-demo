@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('myApp', ['ngRoute'])
-.controller('IndexCtrl', ['$scope', '$http', function($scope, $http) {
+angular.module('myApp', [])
+.controller('IndexCtrl', ['$scope', function($scope, myConstant) {
 	$scope.config = null;
 	$scope.check = 11;
 	$scope.LoginObject = null;
@@ -9,10 +9,6 @@ angular.module('myApp', ['ngRoute'])
 	$scope.loginflag2 = true;
 	$scope.resetflag = false;
 	$scope.ProfileObject = {};
-	$scope.mapping = {
-		standard:[
-			"uid"]
-	};
 
 	$scope.showRegistration = false;
 	$scope.showResendEmail = false;
@@ -20,40 +16,29 @@ angular.module('myApp', ['ngRoute'])
 	$scope.showForgotPW = false;
 	$scope.showSocialLogin = false;
 
-	var request = {
-		method: 'get',
-		url: '../utils/config.json',
-		dataType: 'json',
-		contentType: 'application/json'
-	}
 
 	$scope.renderLoginItem = function(cb) {
-		$http(request)
-			.success(function(jsonData){
-			$scope.config = jsonData;
-			$scope.commonOptions = {
-				apiKey: $scope.config.apiKey,
-			    appName: $scope.config.appName,
-			    forgotPasswordUrl: $scope.config.forgotPasswordUrl,
-			    hashTemplate: true,
-			    sott: $scope.config.sott,
-			    templateName: 'loginradiuscustom_tmpl',
-			    verificationUrl: $scope.config.verificationUrl,
-			    v2RecaptchaSiteKey: $scope.config.v2RecaptchaSiteKey,
-			    v2Recaptcha: false,
-			    invisibleRecaptcha: false
-			}
-		    $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions);
-		    
-		    if(cb){
-		    	cb();
-		    }
+		$scope.commonOptions = {
+			apiKey: "258a7ba5-7c34-4ee7-8b86-07a86398511e",
+			appName: "internal-vincent",
+			forgotPasswordUrl: "http://localhost:8000",
+			hashTemplate: true,
+			sott: "YmZCNm3tgvB7dJ08RP4vbEXya31ynevZs4+J/rWCGtK6lxA9RDzu58/TsLS/+/+mPd6c5MP0WwDYcbcYseeCcPZsRa4zovpChRYaLEg2ozs=*7db073e5c4867b68e708e04d72bf7fb2",
+			templateName: 'loginradiuscustom_tmpl',
+			verificationUrl:"http://localhost:8000",
+			v2Recaptcha: false,
+			invisibleRecaptcha: false
 
-			})
+		};
+	    $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions);
+	    
+	    if(cb){
+	    	cb();
+	    }
+
 	};
-
+	$scope.renderLoginItem();
 	$scope.handleEventRegister = function(){
-		$scope.renderLoginItem(function(){
 			var registration_options = {};
 			registration_options.onSuccess = function(response){
 				alert("Emailed! Please check your email and go to the link provided");
@@ -62,14 +47,14 @@ angular.module('myApp', ['ngRoute'])
 			registration_options.onError = function(errors){
 				alert(JSON.stringify(errors));};
 		    registration_options.container = 'registration-container';
-
-		    $scope.LoginObject.init('registration', registration_options);
-		});
+		    $scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('registration', registration_options);
+		    })
+		
 	}
 
 
 	$scope.handleEventLogin = function(){
-		$scope.renderLoginItem(function(){
 			
 			var login_option = {};
 			login_option.onSuccess = function(response) {
@@ -79,29 +64,28 @@ angular.module('myApp', ['ngRoute'])
 				$scope.loginflag2=false;
 				$scope.ProfileObject = response;
 				$scope.$apply();
-
-				$scope.LoginObject.identify("ga", response.Profile, $scope.mapping);
 			};
 			login_option.onError = function(errors) {
 				//On Errors
 				alert(JSON.stringify(errors));
 			};
-			//$scope.LoginObject.track('ga');
 
 			login_option.container = 'login-container';
 
-			$scope.LoginObject.init('login', login_option)
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('login', login_option);
+		    })
 
-
-		});
 	}
 
 	$scope.handleEventSocialLogin = function(){
-		$scope.renderLoginItem(function(){
 			var custom_interface_option = {};
 			custom_interface_option.templateName = 'loginradiuscustom_tmpl';
-			$scope.LoginObject.customInterface("interfacecontainerdiv", custom_interface_option);
-					
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.customInterface("interfacecontainerdiv", custom_interface_option);
+		    })
 
 			var sl_options = {};
 
@@ -119,13 +103,14 @@ angular.module('myApp', ['ngRoute'])
 					alert(JSON.stringify(errors));
 				};
 			sl_options.container = 'sociallogin-container';
-			$scope.LoginObject.init('socialLogin', sl_options)
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('socialLogin', sl_options);
+		    })
 
-		});
 	}
 
 	$scope.handleEventForgotPW = function(){
-		$scope.renderLoginItem(function(){
 			var forgotpassword_options = {};
 
 			forgotpassword_options.onSuccess = function(response) {
@@ -137,32 +122,16 @@ angular.module('myApp', ['ngRoute'])
 				alert(JSON.stringify(errors));
 			}
 			forgotpassword_options.container = 'forgotpassword-container';
-			$scope.LoginObject.init('forgotPassword', forgotpassword_options)
-		})
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('forgotPassword', forgotpassword_options);
+		    })
 	}
 
-
-	$scope.handleEventResendEmail = function(){
-		$scope.renderLoginItem(function(){
-			var resendemailverification_options = {};
-
-			resendemailverification_options.onSuccess = function(response) {
-				// On Success
-				alert("Emailed! Please check your email and go to the link provided");
-			};
-			resendemailverification_options.onError = function(errors) {
-				// On Errors
-				alert(JSON.stringify(errors));
-			}
-			resendemailverification_options.container = 'resendemailverification-container';
-			$scope.LoginObject.init('resendVerificationEmail', resendemailverification_options)
-		})
-	}
 
 
 
 	$scope.handleEventResetPassword = function(){
-		$scope.renderLoginItem(function(){
 			var reset_options = {};
 			reset_options.container = 'resetpassword-container';
 			reset_options.onSuccess = function(response) {
@@ -175,13 +144,14 @@ angular.module('myApp', ['ngRoute'])
 				// On Errors
 				alert(JSON.stringify(errors));
 			}
-			$scope.LoginObject.init('resetPassword', reset_options);
-		})
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('resetPassword', reset_options);
+		    })
 		}	
 
 
 	$scope.handleEventChangePassword = function(){
-		$scope.renderLoginItem(function(){
 			$scope.hideProfile = true;
 			var changepassword_options = {};
 			changepassword_options.container = 'changepassword-container';
@@ -194,14 +164,16 @@ angular.module('myApp', ['ngRoute'])
 				// On Errors
 				alert(JSON.stringify(errors));
 			}
-			$scope.LoginObject.init('changePassword', changepassword_options);
-		})}	
+			
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init('changePassword', changepassword_options);
+		    })
+		}
 
 
 
 
 	$scope.handleEventVerifyemail = function(){
-		$scope.renderLoginItem(function(){
 			var verifyemail_options = {};
 			verifyemail_options.onSuccess = function(response) {
 				// On Success
@@ -211,24 +183,26 @@ angular.module('myApp', ['ngRoute'])
 				// On Errors
 				alert(JSON.stringify(errors));
 			}
-			$scope.LoginObject.init("verifyEmail", verifyemail_options);
+			
 			$scope.myVar = true;
-		})}	
+
+			$scope.LoginObject.util.ready(function(){
+		    	$scope.LoginObject.init("verifyEmail", verifyemail_options);
+		    })
+		}
 
 
 	$scope.runVerify = function(){
-		$scope.renderLoginItem(function(){
 		var link = JSON.stringify($scope.LoginObject.util.parseQueryString(window.location.href));
 		if (link.includes("email")){
 			$scope.handleEventVerifyemail();
 		}
-	})}
+	}
 
 	$scope.runVerify();
 
 
 	$scope.runReset = function(){
-		$scope.renderLoginItem(function(){
 		var link = JSON.stringify($scope.LoginObject.util.parseQueryString(window.location.href));
 		if (link.includes("reset")){
 			$scope.handleEventResetPassword();
@@ -236,7 +210,7 @@ angular.module('myApp', ['ngRoute'])
 			$scope.loginflag1 = false;
 			$scope.loginflag2 = false;
 		}
-	})}
+	}
 	$scope.logout = function(){
 		location.href = "/";
 	}
@@ -245,7 +219,6 @@ angular.module('myApp', ['ngRoute'])
 	$scope.handleEventRegister();
 	$scope.handleEventLogin();
 	$scope.handleEventForgotPW();
-	$scope.handleEventResendEmail();
 	$scope.handleEventChangePassword();
 
 
@@ -256,12 +229,6 @@ angular.module('myApp', ['ngRoute'])
 			$scope.showForgotPW = false;
 			$scope.showEmailLogin = false;
 			$scope.showResendEmail = false;
-			$scope.showSocialLogin = false;
-		} else if (num == 2){
-			$scope.showResendEmail = !$scope.showResendEmail;
-			$scope.showForgotPW = false;
-			$scope.showEmailLogin = false;
-			$scope.showRegistration = false;
 			$scope.showSocialLogin = false;
 		} else if (num == 3){
 			$scope.showEmailLogin = !$scope.showEmailLogin;

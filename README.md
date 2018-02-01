@@ -1,7 +1,7 @@
 # LoginRadius Angular Demo
 ## How to Run
 **Required: NPM installed** (Link [here](https://nodejs.org/en/download/) to download)
-1. configure the file ``./app/src/utils/config.json`` to match your credentials.  **You must have every field present in that file.  If not, it could cause unexpected behaviour.**
+1. configure the file ``./app/view1/view1.js`` to match your credentials.  **You must have every field present in that file.  If not, it could cause unexpected behaviour.**
 1. The first time running this application, on terminal or any command prompt run:
    1.  ``` cd to directory ```
    2.  ``` npm install ``` (this would run "Bower install" on the behind as well)
