@@ -1,15 +1,14 @@
 # LoginRadius Angular Demo
+### Overview
+This is a demo project of LoginRadius, that is implemented in AngularJS. Filling your api information, you can login with either email or your social account. Try it out!
+
 ## How to Run
 **Required: NPM installed** (Link [here](https://nodejs.org/en/download/) to download)
 1. configure the file ``./app/view1/view1.js`` to match your credentials.  **You must have every field present in that file.  If not, it could cause unexpected behaviour.**
-1. The first time running this application, on terminal or any command prompt run:
+Running this application, on terminal or any command prompt run:
    1.  ``` cd to directory ```
-   2.  ``` npm install ``` (this would run "Bower install" on the behind as well)
-   2.  ``` npm start ```
+   2.  ``` npm start ``` (this would run "npm install" and "Bower install" on the behind as well)
 
-2. In the following, 
-   1.  ``` cd to directory ``` 
-   2.  ``` npm start ```
 
 
 
@@ -57,7 +56,6 @@ $scope.LoginObject.init('registration',registration_options);
   * **Solution:** using a condition to guarantee the functions to run
   * **Example:**1
 ```
-// AFTER //
 var link = JSON.stringify($scope.LoginObject.util.parseQueryString(window.location.href));
 if (link.includes("email")){...}
 if (link.includes("reset")){...}
@@ -65,9 +63,13 @@ if (link.includes("reset")){...}
 ```
 
 
-
-
-
+* ### Program not working without 'api information'
+  * **Solution:** using a guard to guarantee the information is filled
+  * **Example:**
+```
+    if($scope.commonOptions.apiKey.substring(0,1) == "<") 
+      alert("Please fill out your apiKey, appName and sott, otherwise it is not working");
+```
 
 
 

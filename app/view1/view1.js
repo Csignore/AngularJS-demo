@@ -8,7 +8,8 @@ angular.module('myApp', [])
 	$scope.loginflag1 = false;
 	$scope.loginflag2 = true;
 	$scope.resetflag = false;
-	$scope.ProfileObject = {};
+	$scope.ProfileFN = {};
+	$scope.ProfileLN = {};
 
 	$scope.showRegistration = false;
 	$scope.showResendEmail = false;
@@ -30,6 +31,8 @@ angular.module('myApp', [])
 			invisibleRecaptcha: false
 
 		};
+		if($scope.commonOptions.apiKey.substring(0,1) == "<") 
+			alert("Please fill out your apiKey, appName and sott, otherwise it is not working");
 	    $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions);
 	    
 	    if(cb){
@@ -62,7 +65,8 @@ angular.module('myApp', [])
 				console.log(JSON.stringify(response));
 				$scope.loginflag1=true;
 				$scope.loginflag2=false;
-				$scope.ProfileObject = response;
+				$scope.ProfileFN = response.Profile.FirstName;
+				$scope.ProfileLN = response.Profile.LastName;
 				$scope.$apply();
 			};
 			login_option.onError = function(errors) {
@@ -95,7 +99,8 @@ angular.module('myApp', [])
 					console.log(response);
 					$scope.loginflag1=true;
 					$scope.loginflag2=false;
-					$scope.ProfileObject = response;
+					$scope.ProfileFN = response.Profile.FirstName;
+					$scope.ProfileLN = response.Profile.LastName;
 					$scope.$apply();
 					};
 				sl_options.onError = function(errors) {
@@ -212,6 +217,12 @@ angular.module('myApp', [])
 		}
 	}
 	$scope.logout = function(){
+		$scope.LoginObject.api.invalidateToken(window.localStorage['LRTokenKey'],
+					 function(response) {
+					    alert(JSON.stringify(response));
+					}, function(errors) {
+					    alert(JSON.stringify(errors));
+					})
 		location.href = "/";
 	}
 
