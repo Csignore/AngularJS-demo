@@ -32,7 +32,7 @@ angular.module('myApp', [])
 
 		};
 		if($scope.commonOptions.apiKey.substring(0,1) == "<") 
-			alert("Please fill out your apiKey, appName and sott, otherwise it is not working");
+			console.log("Please fill out your apiKey, appName and sott, otherwise it is not working");
 	    $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions);
 	    
 	    if(cb){
