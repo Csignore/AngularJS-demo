@@ -1,87 +1,37 @@
-# LoginRadius Angular Demo
-### Overview
-This is a demo project of LoginRadius, that is implemented in AngularJS. Filling your api information, you can login with either email or your social account. Try it out!
+# LoginRadius AngularJS Demo
+## Overview
+This is another demo project of LoginRadius that is implemented in AngularJS(we have an HTML and JS [demo](https://docs.loginradius.com/api/v2/use-cases-demo/iframe-demo/)). This is a simple single page website, that allows you to display the Hosted Registration page directly on your website in an iframe. The results (success or error) would either be alerted at the page or on the console. Filling your API information, you can log in with either email or your social account. Try it out!
 
 ## How to Run
 **Required: NPM installed** (Link [here](https://nodejs.org/en/download/) to download)
-1. configure the file ``./app/view1/view1.js`` to match your credentials.  **You must have every field present in that file.  If not, it could cause unexpected behaviour.**
+1. configure the file ``/app/view1/view1.js`` to match your credentials.  **You must have every field present in that file.  If not, it could cause unexpected behaviour.**
 Running this application, on terminal or any command prompt run:
    1.  ``` cd to directory ```
    2.  ``` npm start ``` (this would run "npm install" and "Bower install" on the behind as well)
-
-
-
-
-  Now browse to the app at [`localhost:8000`]
+   3. Now browse to the app at `localhost:8000`
 
 ## Noted Differences between Plain-HTML/CSS/JS & AngularJS:
-* ### Invoking the LoginRadiusV2 Singleton:
-  
-  
-  *  **Solution**: To invoke the LoginRadiusV2 you'll need to use:
-  ``` let $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions)``` as shown in *./src/view1.js/renderLoginItem* (or var if you're not in ES6)
-
-* ### Deploying the preset interfaces on the Virtual DOM:
-  * **Problem:** Writing the methods correctly, the LR interfaces do not deploy on the DOM properly (It does not deploy at all)
-
-  * **Solution**: Get rid of the ```LoginObject.util.ready``` wrapper.
-
-  * **Example**:
- ``` 
-// BEFORE //
-LoginObject.util.ready(function() {
-    LoginObject.init('registration',registration_options);
-}
-// AFTER //
-$scope.LoginObject.init('registration',registration_options);
-  ```
-  * This will not cause unexpected errors as long as you have the methods to initialize the LR options in your *componentDidMount* method
-
-* ### Deploying the Social Login Interface on the Virtual DOM:
-  * **Problem:** The Social Login Interface references a class on the DOM, the method will not be able to find "classes" on Angular.
-
-  * **Solution:** On the Social Login component, reference it using "className" instead of "class"
-  * **Example:**
+1. Invoking the LoginRadiusV2 Singleton:
+  * Solution: To invoke the LoginRadiusV2 you'll need to use:
+  ``` let $scope.LoginObject = window.LoginRadiusV2($scope.commonOptions)``` 
+  as shown in *app/view1.js/renderLoginItem* (or var if you're not in ES6)
+2. Program not working without 'API information'
+  * Solution: using a guard to guarantee the information is filled
 ```
-// BEFORE //
-<div id="interfacecontainerdiv" class="interfacecontainerdiv"></div>
-// AFTER //
-<div id="interfacecontainerdiv" className="interfacecontainerdiv"></div>
+    if($scope.commonOptions.apiKey.substring(0,1) == "<")
+    {
+      console.log("Please fill out your apiKey, appName and sott, otherwise it is not working");
+    }
 ```
+3. Verify the token
+  * Problem: Cannot run the functions when getting the token, such as verifying the email for registration and reset Password
 
+  * Solution: using a condition to guarantee the functions to run
+  * Example:
 
-* ### Verify the token when on the Virtual DOM
-  * **Problem:** Cannot run the functions when getting the token, such as verifying the email for registration and reset Password
-
-  * **Solution:** using a condition to guarantee the functions to run
-  * **Example:**1
 ```
 var link = JSON.stringify($scope.LoginObject.util.parseQueryString(window.location.href));
 if (link.includes("email")){...}
 if (link.includes("reset")){...}
 
 ```
-
-
-* ### Program not working without 'api information'
-  * **Solution:** using a guard to guarantee the information is filled
-  * **Example:**
-```
-    if($scope.commonOptions.apiKey.substring(0,1) == "<") 
-      alert("Please fill out your apiKey, appName and sott, otherwise it is not working");
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# AngularJS-demo
