@@ -192,25 +192,24 @@ config(['$locationProvider', '$routeProvider', function($locationProvider,
 			$scope.LoginObject.init("verifyEmail", verifyemail_options);
 		})
 	}
-	// Evaluate if this site is email-verification site and run the HandleEvent
-	$scope.runVerify = function() {
-		var link = window.location.href;
-		if (link.includes("emailverification") && link.includes("vtoken=")) {
-			$scope.handleEventVerifyemail();
+
+	// Evaluate if this site is email-verification site or reset-password, if so run the corresponding HandleEvent function
+	$scope.runTokenVerify = function() {
+		var link = $scope.LoginObject.util.parseQueryString(window.location.href);
+		if (Object.keys(link)[0].includes("vtype")&&Object.keys(link)[1]=="vtoken"&&Object.values(link).length >1) {
+			if (Object.values(link)[0]=="emailverification") 
+				$scope.handleEventVerifyemail();
+			else if(Object.values(link)[0]=="reset"){
+				$scope.handleEventResetPassword();
+				$scope.flags.showReset = true;
+				$scope.flags.showProfilePage = false;
+				$scope.flags.showLoginInput = false;
+			}
 		}
 	}
-	$scope.runVerify();
-	// Evaluate if this site is reset-password site and run the HandleEvent
-	$scope.runReset = function() {
-		var link = window.location.href;
-		if (link.includes("reset") && link.includes("vtoken=")) {
-			$scope.handleEventResetPassword();
-			$scope.flags.showReset = true;
-			$scope.flags.showProfilePage = false;
-			$scope.flags.showLoginInput = false;
-		}
-	}
-	$scope.runReset();
+	$scope.runTokenVerify();
+
+
 	//Invalidate the Token to logout the users safely
 	$scope.logout = function() {
 		$scope.LoginObject.api.invalidateToken(window.localStorage['LRTokenKey'],
